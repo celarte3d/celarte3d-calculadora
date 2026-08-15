@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora & Gerador de Orçamentos 3D - Celarte 3D</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Palette based on Celarte 3D branding (Teal, Cyan, Gold Accent & Dark Navy) */
+      --bg-dark: #060911;
+      --panel-bg: #0B101D;
+      --card-bg: #121828;
+      --input-bg: #080D18;
+      --border-color: rgba(0, 229, 255, 0.12);
+      
+      --brand-teal: #00B4D8;
+      --brand-cyan: #00E5FF;
+      --brand-dark-cyan: #0077B6;
+      --brand-accent-gold: #FFB703;
+      --brand-green: #10B981;
+      --brand-red: #EF4444;
+
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+    }
+
+    body {
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 229, 255, 0.09) 0px, transparent 45%),
+        radial-gradient(at 100% 100%, rgba(0, 180, 216, 0.08) 0px, transparent 45%),
+        radial-gradient(at 50% 50%, rgba(255, 183, 3, 0.03) 0px, transparent 60%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 100%; /* Preenche a tela de borda a borda com margem suave */
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(0, 229, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* App Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0, 229, 255, 0.25));
+    }
+
+    .brand-title h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #00E5FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge-tag {
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--brand-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* Main Grid: 50% / 50% Split across full width */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .calc-subgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .calc-subgrid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Panels & Cards */
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--brand-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title svg {
+      width: 18px;
+      height: 18px;
+      color: var(--brand-cyan);
+    }
+
+    /* Form Inputs */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid #1E293B;
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+      border-color: var(--brand-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2);
+      background: #0D1526;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+      font-size: 13px;
+    }
+
+    .fixed-badge {
+      font-size: 11px;
+      color: #64748B;
+      line-height: 1.5;
+      padding: 10px 14px;
+      background: rgba(8, 13, 24, 0.7);
+      border-radius: 8px;
+      border: 1px dashed var(--border-color);
+    }
+
+    /* Custom Sleek Thin Slider (Barra de Risco) */
+    .slider-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slider-container-sleek {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--input-bg);
+      border: 1px solid #1E293B;
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
+    input[type="range"].sleek-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(0, 229, 255, 0.2);
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"].sleek-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--brand-cyan);
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+      transition: transform 0.15s ease;
+    }
+
+    input[type="range"].sleek-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+    }
+
+    input[type="range"].sleek-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--brand-cyan);
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+      cursor: pointer;
+    }
+
+    .slider-value-badge {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--brand-cyan);
+      min-width: 45px;
+      text-align: right;
+    }
+
+    /* Profit Gauge & Warning */
+    .profit-gauge-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--input-bg);
+      border: 1px solid #1E293B;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 4px;
+    }
+
+    .profit-gauge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .profit-gauge-header .label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .profit-gauge-value {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--brand-cyan);
+      font-family: monospace;
+    }
+
+    .profit-gauge-track {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      position: relative;
+      overflow: visible;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 14px;
+    }
+
+    .profit-gauge-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+      background: linear-gradient(90deg, var(--brand-dark-cyan), var(--brand-cyan));
+    }
+
+    .min-100-marker {
+      position: absolute;
+      left: 50%; /* 100% profit sits at middle of 0-200% scale */
+      top: -3px;
+      bottom: -3px;
+      width: 3px;
+      background: var(--brand-accent-gold);
+      z-index: 5;
+      box-shadow: 0 0 8px var(--brand-accent-gold);
+      border-radius: 2px;
+    }
+
+    .min-100-marker::after {
+      content: '100% Mínimo';
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--brand-accent-gold);
+      white-space: nowrap;
+    }
+
+    .profit-warning-box {
+      margin-top: 4px;
+      padding: 10px 12px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .warning-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #F87171;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .confirm-checkbox-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .confirm-checkbox-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--brand-cyan);
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 11px 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand-dark-cyan) 0%, var(--brand-teal) 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(0, 180, 216, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--brand-teal) 0%, var(--brand-cyan) 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0, 229, 255, 0.45);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #0284C7 0%, var(--brand-cyan) 100%);
+      color: #060911;
+      font-weight: 800;
+      box-shadow: 0 4px 16px rgba(0, 229, 255, 0.4);
+      width: 100%;
+      padding: 13px;
+      font-size: 14px;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, var(--brand-teal) 0%, #38BDF8 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 229, 255, 0.55);
+    }
+
+    .btn-secondary {
+      background: #1E293B;
+      color: #CBD5E1;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+      color: #FFFFFF;
+    }
+
+    .btn-danger-sm {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .btn-danger-sm:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    /* Hero Total Card */
+    .total-card {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .total-card .label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--brand-cyan);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .total-card .price {
+      font-size: 38px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 8px 0;
+      letter-spacing: -1px;
+    }
+
+    .total-card .sub-metrics {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      font-size: 13px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sub-metrics div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sub-metrics .profit { color: var(--brand-green); font-weight: 700; }
+    .sub-metrics .cost { color: #F87171; font-weight: 700; }
+
+    /* Tables */
+    .table-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: var(--input-bg);
+      border: 1px solid #1E293B;
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    .table-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 13px;
+    }
+
+    .table-row:last-child {
+      border-bottom: none;
+    }
+
+    .table-row .name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-filamento { background-color: var(--brand-teal); }
+    .dot-energia { background-color: var(--brand-accent-gold); }
+    .dot-desgaste { background-color: #EC4899; }
+    .dot-embalagem { background-color: #8B5CF6; }
+    .dot-risco { background-color: var(--brand-red); }
+
+    .table-row .val {
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+
+    .table-row.final-cost {
+      padding-top: 12px;
+      margin-top: 4px;
+      border-top: 2px solid #1E293B;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    /* Visual Bars */
+    .visual-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bar-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .bar-bg {
+      height: 7px;
+      background: var(--input-bg);
+      border-radius: 6px;
+      overflow: hidden;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* QUADRO DO ORÇAMENTO (RIGHT COLUMN) */
+    .budget-panel {
+      background: #0E1424;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .budget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .budget-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .budget-brand img {
+      height: 44px;
+      width: auto;
+    }
+
+    .budget-brand h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .budget-toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .budget-info-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1.1fr;
+      gap: 12px;
+      background: var(--input-bg);
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #1E293B;
+    }
+
+    @media (max-width: 600px) {
+      .budget-info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .budget-number-badge {
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--brand-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 1px;
+    }
+
+    /* Editable Budget Table */
+    .budget-table-wrapper {
+      background: var(--input-bg);
+      border: 1px solid #1E293B;
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .budget-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .budget-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--brand-cyan);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #1E293B;
+    }
+
+    .budget-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #E2E8F0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+    }
+
+    /* Editable inputs inside budget table */
+    .edit-qty-input, .edit-price-input, .edit-desc-input {
+      background: #050810 !important;
+      border: 1px solid #334155 !important;
+      border-radius: 6px !important;
+      padding: 6px 8px !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+      font-size: 13px !important;
+    }
+
+    .edit-qty-input {
+      width: 60px;
+      text-align: center;
+    }
+
+    .edit-price-input {
+      width: 95px;
+      text-align: right;
+    }
+
+    .empty-state {
+      padding: 36px 20px;
+      text-align: center;
+      color: #64748B;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin: auto;
+    }
+
+    .empty-state svg {
+      width: 32px;
+      height: 32px;
+      color: #334155;
+    }
+
+    /* Budget Footer & Notes */
+    .notes-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .budget-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: auto;
+    }
+
+    .budget-footer .label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--brand-cyan);
+      letter-spacing: 1px;
+    }
+
+    .budget-footer .grand-total {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--brand-cyan);
+    }
+
+    /* Modal for Import Quote */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #0B101D;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 600px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .modal-header h3 {
+      font-size: 18px;
+      color: #FFFFFF;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .quotes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .quote-item-card {
+      background: var(--card-bg);
+      border: 1px solid #1E293B;
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .quote-item-card:hover {
+      border-color: var(--brand-cyan);
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+      .app-container, .main-grid, .left-column, .budget-panel {
+        box-shadow: none !important;
+        border: none !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .left-column, .app-header, .budget-toolbar, .btn, .modal-overlay, .section-title svg, .btn-danger-sm {
+        display: none !important;
+      }
+      .budget-panel {
+        display: block !important;
+      }
+      .budget-info-grid, .budget-table-wrapper, .budget-footer, .notes-section textarea {
+        background: #FFFFFF !important;
+        border: 1px solid #CCCCCC !important;
+        color: #000000 !important;
+      }
+      input, textarea {
+        border: none !important;
+        background: transparent !important;
+        color: #000000 !important;
+      }
+      .budget-table th, .budget-table td {
+        color: #000000 !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+      }
+      .budget-number-badge {
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+        background: transparent !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- APP HEADER -->
+  <header class="app-header">
+    <div class="brand-title">
+      <img src="assets/logo.png" alt="Celarte 3D" class="brand-logo">
+      <h1>Celarte 3D</h1>
+    </div>
+    <div class="header-actions">
+      <span class="badge-tag">Calculadora & Gestão de Orçamentos</span>
+    </div>
+  </header>
+
+  <!-- MAIN TWO-COLUMN GRID -->
+  <main class="main-grid">
+    
+    <!-- LEFT COLUMN: CALCULATOR & BREAKDOWN -->
+    <div class="left-column">
+      <div class="calc-subgrid">
+        
+        <!-- INPUTS PANEL -->
+        <div class="panel">
+          <div class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            PARÂMETROS DO PROJETO
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>NOME DO PROJETO</label>
+              <input type="text" id="projectName" value="Chaveiro Personalizado">
+            </div>
+            <div class="form-group" style="max-width: 90px;">
+              <label>QTD</label>
+              <input type="text" id="quantity" value="1" oninput="calculate()">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>PESO (G)</label>
+              <input type="text" id="weight" value="6,21" oninput="calculate()">
+            </div>
+            <div class="form-group">
+              <label>TEMPO (HH:MM / MIN)</label>
+              <input type="text" id="printTime" value="0:40" oninput="calculate()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>CUSTO MATERIAL / KG (R$)</label>
+            <input type="text" id="filamentCost" value="100,00" oninput="calculate()">
+          </div>
+
+          <div class="section-title" style="margin-top: 4px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            EMBALAGEM & EXTRAS
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>EMBALAGEM (R$)</label>
+              <input type="text" id="packagingCost" value="0,40" oninput="calculate()">
+            </div>
+            <div class="form-group">
+              <label>OUTROS ADICIONAIS (R$)</label>
+              <input type="text" id="extraCost" value="0,00" oninput="calculate()">
+            </div>
+          </div>
+
+          <!-- SLEEK RISK SLIDER -->
+          <div class="form-group slider-wrapper">
+            <div class="slider-header">
+              <label>TAXA DE RISCO / FALHA (%)</label>
+              <span class="slider-value-badge" id="riskValue">15%</span>
+            </div>
+            <div class="slider-container-sleek">
+              <input type="range" class="sleek-slider" id="riskRate" min="0" max="50" value="15" oninput="updateRiskText(this.value); calculate();">
+            </div>
+          </div>
+
+          <div class="section-title" style="margin-top: 4px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+            PRECIFICAÇÃO
+          </div>
+
+          <div class="form-group">
+            <label>MARKUP DESEJADO (MULTIPLICADOR)</label>
+            <input type="text" id="markup" value="2,0" oninput="calculate()">
+          </div>
+
+          <!-- LUCRO REAL (%) INDICATOR & MINIMUM 100% WARNING -->
+          <div class="profit-gauge-wrapper">
+            <div class="profit-gauge-header">
+              <span class="label">LUCRO REAL (% SOBRE CUSTO)</span>
+              <span class="profit-gauge-value" id="realProfitValue">100.0%</span>
+            </div>
+            <div class="profit-gauge-track">
+              <div class="min-100-marker" title="Lucro Mínimo Recomendado: 100%"></div>
+              <div class="profit-gauge-fill" id="realProfitBar" style="width: 50%;"></div>
+            </div>
+
+            <div class="profit-warning-box" id="profitWarningBox" style="display: none;">
+              <div class="warning-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="color: #F87171;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Atenção: Lucro Real abaixo do mínimo recomendado (100%)
+              </div>
+              <label class="confirm-checkbox-label">
+                <input type="checkbox" id="profitAwarenessCheckbox">
+                Estou ciente e de acordo com a margem reduzida
+              </label>
+            </div>
+          </div>
+
+          <!-- BUTTON TO ADD PRODUCT DIRECTLY TO BUDGET -->
+          <button class="btn btn-success" onclick="addToBudget()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            ADICIONAR AO ORÇAMENTO
+          </button>
+
+          <span class="fixed-badge">* Parâmetros Fixos: Impressora R$ 5.000,00 | Vida Útil 3.000h | Potência 350W | Energia R$ 0,95/kWh</span>
+        </div>
+
+        <!-- BREAKDOWN & VISUAL OUTPUTS -->
+        <div class="panel">
+          <div class="total-card">
+            <div class="label">PROJETO TOTAL (UNITÁRIO × QTD)</div>
+            <div class="price" id="totalProjectPrice">R$ 0,00</div>
+            <div class="sub-metrics">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="color: #10B981;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+                LUCRO: <span class="profit" id="totalProfit">R$ 0,00</span>
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="color: #F87171;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                CUSTO: <span class="cost" id="totalCost">R$ 0,00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            COMPOSIÇÃO DO CUSTO
+          </div>
+          
+          <div class="table-container">
+            <div class="table-row">
+              <div class="name"><span class="dot dot-filamento"></span> Filamento</div>
+              <div class="val" id="valFilamento">R$ 0,00</div>
+            </div>
+            <div class="table-row">
+              <div class="name"><span class="dot dot-energia"></span> Energia</div>
+              <div class="val" id="valEnergia">R$ 0,00</div>
+            </div>
+            <div class="table-row">
+              <div class="name"><span class="dot dot-desgaste"></span> Desgaste Máquina</div>
+              <div class="val" id="valDesgaste">R$ 0,00</div>
+            </div>
+            <div class="table-row">
+              <div class="name"><span class="dot dot-embalagem"></span> Embalagem & Extras</div>
+              <div class="val" id="valExtras">R$ 0,00</div>
+            </div>
+            <div class="table-row">
+              <div class="name"><span class="dot dot-risco"></span> Taxa de Risco/Falha</div>
+              <div class="val" id="valRisco">R$ 0,00</div>
+            </div>
+            <div class="table-row final-cost">
+              <div class="name" style="color: #FFFFFF;">CUSTO FINAL UNITÁRIO</div>
+              <div class="val" style="color: var(--brand-cyan);" id="valCustoFinal">R$ 0,00</div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.001 0 0120.488 9z" />
+            </svg>
+            DETALHAMENTO VISUAL
+          </div>
+
+          <div class="visual-bars">
+            <div class="bar-item">
+              <div class="bar-info">
+                <span>MATERIAL</span>
+                <span id="barFilamentoTxt">R$ 0,00 (0%)</span>
+              </div>
+              <div class="bar-bg"><div class="bar-fill" id="barFilamento" style="background: linear-gradient(90deg, #0077B6, #00E5FF); width: 0%;"></div></div>
+            </div>
+
+            <div class="bar-item">
+              <div class="bar-info">
+                <span>ENERGIA</span>
+                <span id="barEnergiaTxt">R$ 0,00 (0%)</span>
+              </div>
+              <div class="bar-bg"><div class="bar-fill" id="barEnergia" style="background: linear-gradient(90deg, #FFB703, #FFD166); width: 0%;"></div></div>
+            </div>
+
+            <div class="bar-item">
+              <div class="bar-info">
+                <span>DESGASTE MÁQUINA</span>
+                <span id="barDesgasteTxt">R$ 0,00 (0%)</span>
+              </div>
+              <div class="bar-bg"><div class="bar-fill" id="barDesgaste" style="background: linear-gradient(90deg, #EC4899, #F472B6); width: 0%;"></div></div>
+            </div>
+
+            <div class="bar-item">
+              <div class="bar-info">
+                <span>TAXA DE RISCO</span>
+                <span id="barRiscoTxt">R$ 0,00 (0%)</span>
+              </div>
+              <div class="bar-bg"><div class="bar-fill" id="barRisco" style="background: linear-gradient(90deg, #EF4444, #F87171); width: 0%;"></div></div>
+            </div>
+
+            <div class="bar-item">
+              <div class="bar-info">
+                <span>LUCRO LÍQUIDO</span>
+                <span id="barLucroTxt">R$ 0,00 (0%)</span>
+              </div>
+              <div class="bar-bg"><div class="bar-fill" id="barLucro" style="background: linear-gradient(90deg, #10B981, #34D399); width: 0%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: QUADRO DO ORÇAMENTO -->
+    <div class="budget-panel" id="budgetPanel">
+      <!-- HEADER DO QUADRO DE ORÇAMENTO -->
+      <div class="budget-header">
+        <div class="budget-brand">
+          <img src="assets/logo.png" alt="Celarte 3D">
+          <div>
+            <h2>Celarte 3D</h2>
+            <span style="font-size: 11px; color: var(--brand-cyan);">Orçamento de Impressão 3D</span>
+          </div>
+        </div>
+        <div class="budget-toolbar">
+          <button class="btn btn-primary" onclick="saveCurrentBudget()">💾 Salvar</button>
+          <button class="btn btn-secondary" onclick="openImportModal()">📂 Importar</button>
+          <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir</button>
+          <button class="btn btn-secondary" onclick="createNewBudget()" title="Novo Orçamento">✨ Novo</button>
+        </div>
+      </div>
+
+      <!-- CAMPOS DO CLIENTE E NUMERO DO ORÇAMENTO -->
+      <div class="budget-info-grid">
+        <div class="form-group">
+          <label>NOME DO CLIENTE</label>
+          <input type="text" id="clientName" placeholder="Ex: João Silva">
+        </div>
+        <div class="form-group">
+          <label>TELEFONE</label>
+          <input type="text" id="clientPhone" placeholder="(00) 00000-0000">
+        </div>
+        <div class="form-group">
+          <label>Nº DO ORÇAMENTO</label>
+          <div class="budget-number-badge" id="budgetNumberDisplay">CTORC - 00001</div>
+        </div>
+      </div>
+
+      <!-- TABELA EDITÁVEL DE PRODUTOS DO ORÇAMENTO -->
+      <div class="budget-table-wrapper">
+        <table class="budget-table">
+          <thead>
+            <tr>
+              <th>Descrição do Produto</th>
+              <th style="width: 80px; text-align: center;">Qtd</th>
+              <th style="width: 120px; text-align: right;">Val. Unit (R$)</th>
+              <th style="width: 110px; text-align: right;">Total (R$)</th>
+              <th style="width: 45px; text-align: center;">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="budgetTableBody">
+            <!-- Items rendered dynamically with editable inputs -->
+          </tbody>
+        </table>
+        
+        <div class="empty-state" id="emptyBudgetState">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h12l1 12H4L5 9z" />
+          </svg>
+          <span>Nenhum produto adicionado ao orçamento.</span>
+          <span style="font-size: 11px; color: #475569;">Calcule os valores ao lado e clique em "+ ADICIONAR AO ORÇAMENTO".</span>
+        </div>
+      </div>
+
+      <!-- OBSERVAÇÕES E PRAZOS -->
+      <div class="notes-section">
+        <label>OBSERVAÇÕES E PRAZOS DE ENTREGA</label>
+        <textarea id="budgetNotes" placeholder="Ex: Prazo de produção: 3 dias úteis. Condições de pagamento: 50% no pedido e 50% na entrega. Garantia de acabamento Celarte 3D."></textarea>
+      </div>
+
+      <!-- FOOTER DO ORÇAMENTO COM TOTAL -->
+      <div class="budget-footer">
+        <div>
+          <div class="label">TOTAL DO ORÇAMENTO</div>
+          <span style="font-size: 11px; color: #64748B;" id="budgetItemCountText">0 item(ns)</span>
+        </div>
+        <div class="grand-total" id="budgetGrandTotal">R$ 0,00</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL IMPORTAR ORÇAMENTO -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Orçamentos Salvos</h3>
+      <button class="modal-close" onclick="closeImportModal()">&times;</button>
+    </div>
+    <div class="quotes-list" id="savedQuotesList">
+      <!-- Items dynamically populated -->
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+      <button class="btn btn-secondary" onclick="closeImportModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // State variables for Budget
+  let budgetItems = [];
+  let currentUnitSellingPrice = 0;
+  let currentProjectTotalPrice = 0;
+
+  // LocalStorage keys
+  const STORAGE_QUOTES_KEY = 'celarte_saved_quotes';
+  const STORAGE_COUNTER_KEY = 'celarte_quote_counter';
+
+  function parseVal(id) {
+    let val = document.getElementById(id).value.trim().replace(',', '.');
+    let num = parseFloat(val);
+    return isNaN(num) ? 0 : num;
+  }
+
+  function parseTime(id) {
+    let raw = document.getElementById(id).value.trim();
+    if (!raw) return 0;
+    if (raw.includes(':')) {
+      let parts = raw.split(':');
+      let h = parseFloat(parts[0]) || 0;
+      let m = parseFloat(parts[1]) || 0;
+      return h + (m / 60);
+    }
+    let num = parseFloat(raw.replace(',', '.'));
+    return isNaN(num) ? 0 : num / 60;
+  }
+
+  function fmtR$(val) {
+    return 'R$ ' + val.toFixed(2).replace('.', ',');
+  }
+
+  function getNextQuoteNumber() {
+    let counter = parseInt(localStorage.getItem(STORAGE_COUNTER_KEY) || '1', 10);
+    let padded = String(counter).padStart(5, '0');
+    return `CTORC - ${padded}`;
+  }
+
+  function incrementQuoteCounter() {
+    let counter = parseInt(localStorage.getItem(STORAGE_COUNTER_KEY) || '1', 10);
+    localStorage.setItem(STORAGE_COUNTER_KEY, counter + 1);
+  }
+
+  function updateRiskText(val) {
+    document.getElementById('riskValue').innerText = val + '%';
+  }
+
+  function calculate() {
+    let qty = parseVal('quantity') || 1;
+    let weightG = parseVal('weight');
+    let printHours = parseTime('printTime');
+    let filamentKgCost = parseVal('filamentCost');
+    let pkgCost = parseVal('packagingCost');
+    let extCost = parseVal('extraCost');
+    let riskPct = parseVal('riskRate') / 100;
+    let markup = parseVal('markup') || 1;
+
+    // Fixed parameters
+    let powerW = 350;
+    let kwhRate = 0.95;
+    let printerCost = 5000;
+    let lifespanH = 3000;
+
+    // Direct unit calculations
+    let costFilament = (weightG / 1000) * filamentKgCost;
+    let costEnergy = (powerW / 1000) * printHours * kwhRate;
+    let costDepreciation = (printerCost / lifespanH) * printHours;
+    let costExtras = pkgCost + extCost;
+
+    let subtotalDirect = costFilament + costEnergy + costDepreciation + costExtras;
+    let costRisk = subtotalDirect * riskPct;
+
+    let unitCostTotal = subtotalDirect + costRisk;
+    let unitSellingPrice = unitCostTotal * markup;
+    let unitProfit = unitSellingPrice - unitCostTotal;
+
+    currentUnitSellingPrice = unitSellingPrice;
+
+    // Totals
+    let projectTotalPrice = unitSellingPrice * qty;
+    let projectTotalCost = unitCostTotal * qty;
+    let projectTotalProfit = unitProfit * qty;
+
+    currentProjectTotalPrice = projectTotalPrice;
+
+    // Render Outputs
+    document.getElementById('totalProjectPrice').innerText = fmtR$(projectTotalPrice);
+    document.getElementById('totalProfit').innerText = fmtR$(projectTotalProfit);
+    document.getElementById('totalCost').innerText = fmtR$(projectTotalCost);
+
+    // Breakdown Table
+    document.getElementById('valFilamento').innerText = fmtR$(costFilament);
+    document.getElementById('valEnergia').innerText = fmtR$(costEnergy);
+    document.getElementById('valDesgaste').innerText = fmtR$(costDepreciation);
+    document.getElementById('valExtras').innerText = fmtR$(costExtras);
+    document.getElementById('valRisco').innerText = fmtR$(costRisk);
+    document.getElementById('valCustoFinal').innerText = fmtR$(unitCostTotal);
+
+    // Visual Bars
+    let basePrice = unitSellingPrice > 0 ? unitSellingPrice : 1;
+    
+    let pctFilament = Math.min(100, (costFilament / basePrice) * 100);
+    let pctEnergy = Math.min(100, (costEnergy / basePrice) * 100);
+    let pctDepreciation = Math.min(100, (costDepreciation / basePrice) * 100);
+    let pctRisk = Math.min(100, (costRisk / basePrice) * 100);
+    let pctProfit = Math.max(0, Math.min(100, (unitProfit / basePrice) * 100));
+
+    document.getElementById('barFilamento').style.width = pctFilament.toFixed(1) + '%';
+    document.getElementById('barFilamentoTxt').innerText = fmtR$(costFilament) + ' (' + pctFilament.toFixed(1) + '%)';
+
+    document.getElementById('barEnergia').style.width = pctEnergy.toFixed(1) + '%';
+    document.getElementById('barEnergiaTxt').innerText = fmtR$(costEnergy) + ' (' + pctEnergy.toFixed(1) + '%)';
+
+    document.getElementById('barDesgaste').style.width = pctDepreciation.toFixed(1) + '%';
+    document.getElementById('barDesgasteTxt').innerText = fmtR$(costDepreciation) + ' (' + pctDepreciation.toFixed(1) + '%)';
+
+    document.getElementById('barRisco').style.width = pctRisk.toFixed(1) + '%';
+    document.getElementById('barRiscoTxt').innerText = fmtR$(costRisk) + ' (' + pctRisk.toFixed(1) + '%)';
+
+    document.getElementById('barLucro').style.width = pctProfit.toFixed(1) + '%';
+    document.getElementById('barLucroTxt').innerText = fmtR$(unitProfit) + ' (' + pctProfit.toFixed(1) + '%)';
+
+    // Calculate Real Profit Percentage over Cost
+    let realProfitPct = (markup - 1) * 100;
+    document.getElementById('realProfitValue').innerText = realProfitPct.toFixed(1) + '%';
+
+    // Fill bar width (0% to 200%+ profit mapped to 0% to 100% track width)
+    let gaugeFillPct = Math.min(100, Math.max(0, (realProfitPct / 200) * 100));
+    let realProfitBar = document.getElementById('realProfitBar');
+    realProfitBar.style.width = gaugeFillPct.toFixed(1) + '%';
+
+    let warningBox = document.getElementById('profitWarningBox');
+    let realProfitValueEl = document.getElementById('realProfitValue');
+
+    if (realProfitPct < 100) {
+      warningBox.style.display = 'flex';
+      realProfitBar.style.background = 'linear-gradient(90deg, #EF4444, #F59E0B)';
+      realProfitValueEl.style.color = '#F87171';
+    } else {
+      warningBox.style.display = 'none';
+      document.getElementById('profitAwarenessCheckbox').checked = false;
+      realProfitBar.style.background = 'linear-gradient(90deg, var(--brand-dark-cyan), var(--brand-cyan))';
+      realProfitValueEl.style.color = 'var(--brand-cyan)';
+    }
+  }
+
+  // Add Item to Budget
+  function addToBudget() {
+    let markup = parseVal('markup') || 1;
+    let realProfitPct = (markup - 1) * 100;
+
+    if (realProfitPct < 100) {
+      let isAware = document.getElementById('profitAwarenessCheckbox').checked;
+      if (!isAware) {
+        alert('⚠️ O Lucro Real está abaixo do mínimo recomendado de 100%!\nPor favor, marque a caixa de confirmação de ciência antes de adicionar o produto ao orçamento.');
+        document.getElementById('profitWarningBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
+    let name = document.getElementById('projectName').value.trim() || 'Item 3D';
+    let qty = parseVal('quantity') || 1;
+    let unitPrice = currentUnitSellingPrice;
+    let total = unitPrice * qty;
+
+    budgetItems.push({
+      id: Date.now(),
+      description: name,
+      quantity: qty,
+      unitPrice: unitPrice,
+      total: total
+    });
+
+    renderBudgetTable();
+
+    // Subtle feedback animation on budget panel
+    let panel = document.getElementById('budgetPanel');
+    panel.style.boxShadow = '0 0 30px rgba(0, 229, 255, 0.4)';
+    setTimeout(() => {
+      panel.style.boxShadow = '0 12px 35px rgba(0, 0, 0, 0.5)';
+    }, 600);
+  }
+
+  function updateBudgetItemDesc(id, newDesc) {
+    let item = budgetItems.find(i => i.id === id);
+    if (item) {
+      item.description = newDesc;
+    }
+  }
+
+  function updateBudgetItemQty(id, newQty) {
+    let item = budgetItems.find(i => i.id === id);
+    if (item) {
+      let qtyNum = parseFloat(newQty) || 1;
+      item.quantity = qtyNum;
+      item.total = item.unitPrice * qtyNum;
+      renderBudgetTable(false); // Update totals without losing active edit focus
+    }
+  }
+
+  function updateBudgetItemPrice(id, newPriceRaw) {
+    let item = budgetItems.find(i => i.id === id);
+    if (item) {
+      let priceNum = parseFloat(newPriceRaw.replace(',', '.')) || 0;
+      item.unitPrice = priceNum;
+      item.total = priceNum * item.quantity;
+      renderBudgetTable(false); // Update totals without losing active edit focus
+    }
+  }
+
+  function removeFromBudget(id) {
+    budgetItems = budgetItems.filter(item => item.id !== id);
+    renderBudgetTable();
+  }
+
+  function renderBudgetTable(rebuildDOM = true) {
+    let tbody = document.getElementById('budgetTableBody');
+    let emptyState = document.getElementById('emptyBudgetState');
+
+    let grandTotal = 0;
+    budgetItems.forEach(i => grandTotal += i.total);
+
+    if (budgetItems.length === 0) {
+      tbody.innerHTML = '';
+      emptyState.style.display = 'flex';
+      document.getElementById('budgetGrandTotal').innerText = fmtR$(0);
+      document.getElementById('budgetItemCountText').innerText = '0 item(ns)';
+      return;
+    }
+
+    emptyState.style.display = 'none';
+
+    if (rebuildDOM) {
+      tbody.innerHTML = '';
+      budgetItems.forEach((item) => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <input type="text" class="edit-desc-input" value="${item.description}" oninput="updateBudgetItemDesc(${item.id}, this.value)">
+          </td>
+          <td style="text-align: center;">
+            <input type="number" step="1" min="1" class="edit-qty-input" value="${item.quantity}" oninput="updateBudgetItemQty(${item.id}, this.value)">
+          </td>
+          <td style="text-align: right;">
+            <input type="text" class="edit-price-input" value="${item.unitPrice.toFixed(2).replace('.', ',')}" onchange="updateBudgetItemPrice(${item.id}, this.value)">
+          </td>
+          <td style="text-align: right; font-weight: 800; color: var(--brand-cyan);" id="itemTotal_${item.id}">
+            ${fmtR$(item.total)}
+          </td>
+          <td style="text-align: center;">
+            <button class="btn-danger-sm" onclick="removeFromBudget(${item.id})">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } else {
+      // Just update cell totals without rebuilding input DOM elements
+      budgetItems.forEach((item) => {
+        let el = document.getElementById(`itemTotal_${item.id}`);
+        if (el) {
+          el.innerText = fmtR$(item.total);
+        }
+      });
+    }
+
+    document.getElementById('budgetGrandTotal').innerText = fmtR$(grandTotal);
+    document.getElementById('budgetItemCountText').innerText = `${budgetItems.length} item(ns)`;
+  }
+
+  function saveCurrentBudget() {
+    let quoteNum = document.getElementById('budgetNumberDisplay').innerText.trim();
+    let clientName = document.getElementById('clientName').value.trim() || 'Cliente Não Informado';
+    let clientPhone = document.getElementById('clientPhone').value.trim() || '';
+    let notes = document.getElementById('budgetNotes').value.trim() || '';
+
+    if (budgetItems.length === 0) {
+      alert('Adicione pelo menos um produto antes de salvar o orçamento.');
+      return;
+    }
+
+    let grandTotal = budgetItems.reduce((acc, i) => acc + i.total, 0);
+
+    let quoteData = {
+      number: quoteNum,
+      clientName: clientName,
+      clientPhone: clientPhone,
+      notes: notes,
+      items: budgetItems,
+      total: grandTotal,
+      date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})
+    };
+
+    let saved = JSON.parse(localStorage.getItem(STORAGE_QUOTES_KEY) || '[]');
+    let existingIndex = saved.findIndex(q => q.number === quoteNum);
+
+    if (existingIndex >= 0) {
+      saved[existingIndex] = quoteData;
+    } else {
+      saved.push(quoteData);
+      incrementQuoteCounter(); // Increment for future quote
+    }
+
+    localStorage.setItem(STORAGE_QUOTES_KEY, JSON.stringify(saved));
+    alert(`Orçamento ${quoteNum} salvo com sucesso!`);
+  }
+
+  function createNewBudget() {
+    budgetItems = [];
+    document.getElementById('clientName').value = '';
+    document.getElementById('clientPhone').value = '';
+    document.getElementById('budgetNotes').value = '';
+    document.getElementById('budgetNumberDisplay').innerText = getNextQuoteNumber();
+    renderBudgetTable();
+  }
+
+  function openImportModal() {
+    let saved = JSON.parse(localStorage.getItem(STORAGE_QUOTES_KEY) || '[]');
+    let listContainer = document.getElementById('savedQuotesList');
+    listContainer.innerHTML = '';
+
+    if (saved.length === 0) {
+      listContainer.innerHTML = '<div style="color: #94A3B8; text-align: center; padding: 20px;">Nenhum orçamento salvo encontrado.</div>';
+    } else {
+      saved.forEach((q) => {
+        let card = document.createElement('div');
+        card.className = 'quote-item-card';
+        card.innerHTML = `
+          <div>
+            <div style="font-weight: 800; color: var(--brand-cyan); font-family: monospace;">${q.number}</div>
+            <div style="font-size: 13px; color: #FFFFFF;">${q.clientName} ${q.clientPhone ? '(' + q.clientPhone + ')' : ''}</div>
+            <div style="font-size: 11px; color: #64748B;">Data: ${q.date || 'N/I'} • ${q.items.length} itens</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="font-weight: 800; color: var(--brand-cyan); font-size: 15px;">${fmtR$(q.total)}</div>
+            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="loadQuote('${q.number}')">Carregar</button>
+            <button class="btn-danger-sm" onclick="deleteQuote('${q.number}')">🗑️</button>
+          </div>
+        `;
+        listContainer.appendChild(card);
+      });
+    }
+
+    document.getElementById('importModal').classList.add('active');
+  }
+
+  function closeImportModal() {
+    document.getElementById('importModal').classList.remove('active');
+  }
+
+  function loadQuote(quoteNum) {
+    let saved = JSON.parse(localStorage.getItem(STORAGE_QUOTES_KEY) || '[]');
+    let target = saved.find(q => q.number === quoteNum);
+    if (target) {
+      document.getElementById('budgetNumberDisplay').innerText = target.number;
+      document.getElementById('clientName').value = target.clientName || '';
+      document.getElementById('clientPhone').value = target.clientPhone || '';
+      document.getElementById('budgetNotes').value = target.notes || '';
+      budgetItems = target.items || [];
+      renderBudgetTable();
+      closeImportModal();
+    }
+  }
+
+  function deleteQuote(quoteNum) {
+    if (confirm(`Deseja remover o orçamento ${quoteNum}?`)) {
+      let saved = JSON.parse(localStorage.getItem(STORAGE_QUOTES_KEY) || '[]');
+      saved = saved.filter(q => q.number !== quoteNum);
+      localStorage.setItem(STORAGE_QUOTES_KEY, JSON.stringify(saved));
+      openImportModal();
+    }
+  }
+
+  // Initial setup on load
+  document.getElementById('budgetNumberDisplay').innerText = getNextQuoteNumber();
+  calculate();
+  renderBudgetTable();
+</script>
+</body>
+</html>
