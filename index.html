@@ -775,6 +775,7 @@
     .budget-table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: fixed;
       text-align: left;
     }
 
@@ -787,6 +788,18 @@
       letter-spacing: 0.8px;
       padding: 10px 12px;
       border-bottom: 1px solid #1E293B;
+    }
+
+    .budget-table th:nth-child(5),
+    .budget-table td:nth-child(5) {
+      width: 110px;
+      text-align: right;
+    }
+
+    .budget-table th:nth-child(6),
+    .budget-table td:nth-child(6) {
+      width: 58px;
+      text-align: center;
     }
 
     .budget-table td {
