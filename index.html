@@ -1035,35 +1035,63 @@
         border: 1px solid #CCCCCC !important;
         color: #000000 !important;
       }
-      input, textarea {
-        border: none !important;
+      .budget-info-grid input,
+      .budget-info-grid textarea,
+      .budget-table input,
+      .edit-qty-input,
+      .edit-price-input,
+      .edit-desc-input,
+      .budget-number-badge,
+      .budget-date-badge,
+      .budget-total-badge,
+      .budget-footer .grand-total,
+      textarea {
+        border: 1px solid #000000 !important;
         background: transparent !important;
         color: #000000 !important;
+        border-radius: 999px !important;
+        font-weight: 400 !important;
+        box-shadow: none !important;
       }
       .budget-table th, .budget-table td {
         color: #000000 !important;
-        font-weight: 800 !important;
+        font-weight: 400 !important;
         border-bottom: 1px solid #E2E8F0 !important;
       }
       .budget-table th {
-        font-weight: 800 !important;
+        font-weight: 600 !important;
       }
       .budget-table input,
       .edit-qty-input,
       .edit-price-input,
       .edit-desc-input {
         color: #000000 !important;
-        font-weight: 800 !important;
         background: #FFFFFF !important;
         border: 1px solid #000000 !important;
       }
-      .budget-number-badge {
-        border: 1px solid #000000 !important;
-        color: #000000 !important;
-        background: transparent !important;
+      .budget-number-badge,
+      .budget-date-badge,
+      .budget-total-badge,
+      .budget-footer .grand-total {
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        min-width: 92px !important;
+        padding: 8px 12px !important;
+        margin: 0 auto !important;
+      }
+      .budget-footer {
+        align-items: center !important;
+      }
+      .budget-footer .grand-total {
+        min-width: 140px !important;
       }
       .notes-section label {
         color: #000000 !important;
+      }
+      .notes-section textarea {
+        border-radius: 12px !important;
       }
       textarea::placeholder {
         color: #666666 !important;
