@@ -1,0 +1,24 @@
+<svg width="520" height="180" viewBox="0 0 520 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="500" height="160" rx="28" fill="#0B101D" stroke="#00E5FF" stroke-opacity="0.4"/>
+  <g filter="url(#glow)">
+    <path d="M80 48L132 76V128L80 156L28 128V76L80 48Z" fill="#0B101D" stroke="#00E5FF" stroke-width="3"/>
+    <path d="M80 48L132 76L80 104L28 76L80 48Z" fill="#0D1526" stroke="#00E5FF" stroke-width="3"/>
+    <path d="M80 48V104M28 76L80 104L132 76M80 104V156" stroke="#00E5FF" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <path d="M170 66H215V98H170V66ZM170 106H250V135H170V106Z" fill="#00E5FF" fill-opacity="0.9"/>
+  <path d="M261 61H316C345 61 365 77 365 97C365 117 345 131 316 131H278V144H261V61ZM278 78H311C326 78 336 84 336 97C336 110 326 117 311 117H278V78Z" fill="white"/>
+  <path d="M380 61H417L453 96L490 61H527V144H510V90L475 123H432L397 90V144H380V61Z" fill="url(#gradText)"/>
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="gradText" x1="380" y1="61" x2="527" y2="144" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00B4D8"/>
+      <stop offset="1" stop-color="#00E5FF"/>
+    </linearGradient>
+  </defs>
+</svg>
