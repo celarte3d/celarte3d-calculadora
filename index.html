@@ -1086,6 +1086,8 @@
       }
       .budget-footer .grand-total {
         min-width: 140px !important;
+        justify-content: flex-end !important;
+        text-align: right !important;
       }
       .notes-section label {
         color: #000000 !important;
@@ -1704,7 +1706,7 @@
     if (budgetItems.length === 0) {
       tbody.innerHTML = '';
       emptyState.style.display = 'flex';
-      document.getElementById('budgetGrandTotal').innerText = '0,00';
+    document.getElementById('budgetGrandTotal').innerText = 'R$ 0,00';
       document.getElementById('budgetItemCountText').innerText = '0 item(ns)';
       return;
     }
@@ -1747,7 +1749,7 @@
       });
     }
 
-    document.getElementById('budgetGrandTotal').innerText = fmtMoneyValue(grandTotal);
+    document.getElementById('budgetGrandTotal').innerText = 'R$ ' + fmtMoneyValue(grandTotal);
     document.getElementById('budgetItemCountText').innerText = `${budgetItems.length} item(ns)`;
   }
 
