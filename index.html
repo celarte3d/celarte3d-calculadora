@@ -1435,20 +1435,21 @@
         </div>
       </div>
 
-      <!-- OBSERVAÇÕES E PRAZOS -->
-      <div class="notes-section">
-        <label>OBSERVAÇÕES E PRAZOS DE ENTREGA</label>
-        <textarea id="budgetNotes" placeholder="Prazo de produção: 3 dias úteis. Condições de pagamento: 50% no pedido e 50% na entrega. Garantia de acabamento Celarte 3D."></textarea>
-      </div>
-
-      <!-- FOOTER DO ORÇAMENTO COM TOTAL -->
-      <div class="budget-footer">
+      <!-- FOOTER DO ORÇAMENTO COM TOTAL (movido acima das observações) -->
+      <div class="budget-footer" style="margin-bottom:18px;">
         <div>
           <div class="label">TOTAL DO ORÇAMENTO</div>
           <span style="font-size: 11px; color: #64748B;" id="budgetItemCountText">0 item(ns)</span>
         </div>
-        <div class="budget-total-badge grand-total" id="budgetGrandTotal">0,00</div>
+        <div class="budget-total-badge grand-total" id="budgetGrandTotal">R$ 0,00</div>
       </div>
+
+      <!-- OBSERVAÇÕES E PRAZOS -->
+      <div class="notes-section" style="margin-top:6px;">
+        <label>OBSERVAÇÕES E PRAZOS DE ENTREGA</label>
+        <textarea id="budgetNotes" placeholder="Prazo de produção: 3 dias úteis. Condições de pagamento: 50% no pedido e 50% na entrega. Garantia de acabamento Celarte 3D."></textarea>
+      </div>
+
     </div>
 
   </main>
