@@ -887,7 +887,7 @@
 
     .budget-footer {
       display: flex;
-      justify-content: flex-start; /* place contents starting from the left */
+      justify-content: space-between; /* keep label left, total right */
       align-items: center;
       background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
       /* stronger, more visible border (black for print and screen) */
@@ -902,26 +902,25 @@
       font-weight: 800;
       color: var(--brand-cyan);
       letter-spacing: 1px;
-      order: 1; /* label after the grand-total */
-      margin-left: 12px;
+      margin-left: 0;
     }
 
-    /* Badge: move the grand total to the left (order 0) and keep number left-aligned inside it */
+    /* Badge: align grand total to the right side of the footer */
     .budget-footer .grand-total {
-      order: 0;
+      order: 1;
       display: inline-flex;
       align-items: center;
-      justify-content: flex-start !important;
+      justify-content: flex-end !important;
       min-width: 140px;
-      margin-right: 16px;
-      padding: 8px 18px 8px 14px; /* left padding for left-aligned number */
+      margin-left: auto;
+      padding: 8px 14px; /* more compact padding */
       border-radius: 999px;
       border: 1.6px solid rgba(0, 0, 0, 0.14);
       background: rgba(255, 255, 255, 0.03);
       font-size: 22px;
       font-weight: 800;
       color: var(--brand-cyan);
-      text-align: left !important;
+      text-align: right !important;
     }
 
     /* reinforce borders across key panels for better visibility */
