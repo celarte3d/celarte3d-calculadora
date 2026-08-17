@@ -1166,6 +1166,72 @@
       textarea::placeholder {
         color: #666666 !important;
       }
+
+      /* Print: remove badge borders (no balloons) and make text bold for print readability */
+      .budget-info-grid input,
+      .budget-info-grid textarea,
+      .budget-table input,
+      .edit-qty-input,
+      .edit-price-input,
+      .edit-desc-input,
+      .budget-number-badge,
+      .budget-date-badge,
+      .budget-total-badge,
+      .budget-footer .grand-total,
+      textarea {
+        border: none !important;
+        background: transparent !important;
+        color: #000000 !important;
+        border-radius: 0 !important;
+        font-weight: 700 !important;
+        box-shadow: none !important;
+      }
+
+      /* Make all labels, headers and table text bold in print */
+      .budget-print-title,
+      .budget-info-grid label,
+      .budget-table th,
+      .budget-table td,
+      .budget-footer .label,
+      .notes-section label {
+        font-weight: 700 !important;
+        color: #000000 !important;
+      }
+
+      /* Ensure inputs inside table look plain and bold */
+      .budget-table input,
+      .edit-qty-input,
+      .edit-price-input,
+      .edit-desc-input {
+        color: #000000 !important;
+        background: #FFFFFF !important;
+        border: none !important;
+        font-weight: 700 !important;
+      }
+
+      /* Keep footer contact black in print (screen remains white) */
+      .budget-contact .budget-contact-phone,
+      .budget-contact .budget-contact-email {
+        color: #000000 !important;
+      }
+
+      /* Hide action column in print */
+      .budget-table th:nth-child(6), .budget-table td:nth-child(6) {
+        display: none !important;
+      }
+    }
+        justify-content: flex-end !important;
+        text-align: right !important;
+      }
+      .notes-section label {
+        color: #000000 !important;
+      }
+      .notes-section textarea {
+        border-radius: 12px !important;
+      }
+      textarea::placeholder {
+        color: #666666 !important;
+      }
     }
   </style>
 </head>
