@@ -1269,6 +1269,21 @@
       .budget-table th:nth-child(6), .budget-table td:nth-child(6) {
         display: none !important;
       }
+
+      /* Prevent quantity clipping: widen QTD column and qty input specifically for print */
+      .budget-table th:nth-child(3),
+      .budget-table td:nth-child(3) {
+        width: 110px !important;
+      }
+      .edit-qty-input {
+        width: 110px !important;
+      }
+
+      /* Avoid cell clipping */
+      .budget-table td {
+        overflow: visible !important;
+        white-space: nowrap !important;
+      }
     }
         justify-content: flex-end !important;
         text-align: right !important;
@@ -1617,8 +1632,8 @@
 
       <!-- OBSERVAÇÕES E PRAZOS -->
       <div class="notes-section" style="margin-top:6px;">
-        <label>OBSERVAÇÕES E PRAZOS DE ENTREGA</label>
-        <textarea id="budgetNotes" placeholder="Prazo de produção: 3 dias úteis. Condições de pagamento: 50% no pedido e 50% na entrega. Garantia de acabamento Celarte 3D."></textarea>
+        <label>OBSERVAÇÕES</label>
+        <textarea id="budgetNotes" placeholder="Condições de pagamento: 50% no pedido e 50% na entrega. Garantia de acabamento Celarte 3D."></textarea>
       </div>
 
       <!-- RODAPÉ DE CONTATO: logo centralizada + telefone + email -->
