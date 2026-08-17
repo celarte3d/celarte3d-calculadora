@@ -870,7 +870,8 @@
       justify-content: space-between;
       align-items: center;
       background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      /* stronger, more visible border */
+      border: 1.6px solid rgba(0, 0, 0, 0.12);
       border-radius: 12px;
       padding: 16px 20px;
       margin-top: auto;
@@ -883,14 +884,15 @@
       letter-spacing: 1px;
     }
 
+    /* Badge: keep it at the right side but align the value text to the left inside the badge */
     .budget-footer .grand-total {
       display: inline-flex;
       align-items: center;
       justify-content: flex-start !important;
-      min-width: 120px;
+      min-width: 140px;
       padding: 8px 18px 8px 14px; /* left padding for left-aligned number */
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1.6px solid rgba(0, 0, 0, 0.14);
       background: rgba(255, 255, 255, 0.03);
       font-size: 22px;
       font-weight: 800;
@@ -898,7 +900,7 @@
       text-align: left !important;
     }
 
-    /* stronger borders for visibility */
+    /* reinforce borders across key panels for better visibility */
     .budget-panel,
     .budget-info-grid,
     .budget-table-wrapper,
@@ -911,14 +913,18 @@
     .budget-table td,
     .quote-item-card,
     .modal-box {
-      border-color: rgba(255, 255, 255, 0.16) !important;
-      border-width: 1px !important;
+      border-color: rgba(0, 0, 0, 0.18) !important;
+      border-width: 1.6px !important;
     }
 
     /* print: stronger, darker borders */
     @media print {
       .budget-info-grid, .budget-table-wrapper, .budget-footer {
-        border-color: #999999 !important;
+        border-color: #666666 !important;
+        border-width: 1.2px !important;
+      }
+      .budget-footer .grand-total {
+        border-color: #666666 !important;
       }
     }
 
@@ -1473,6 +1479,13 @@
       <div class="notes-section" style="margin-top:6px;">
         <label>OBSERVAÇÕES E PRAZOS DE ENTREGA</label>
         <textarea id="budgetNotes" placeholder="Prazo de produção: 3 dias úteis. Condições de pagamento: 50% no pedido e 50% na entrega. Garantia de acabamento Celarte 3D."></textarea>
+      </div>
+
+      <!-- RODAPÉ DE CONTATO: logo centralizada + telefone + email -->
+      <div class="budget-contact" style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:18px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06);">
+        <img src="assets/logo-budget-panel.png" alt="Celarte 3D" style="height:48px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.12));">
+        <div style="font-size:14px;font-weight:700;color:#0B101D;">(37) 99939-8906</div>
+        <div style="font-size:13px;color:#0B101D;">celarte3d@gmail.com</div>
       </div>
 
     </div>
