@@ -1153,8 +1153,7 @@
       }
       .budget-number-badge,
       .budget-date-badge,
-      .budget-total-badge,
-      .budget-footer .grand-total {
+      .budget-total-badge {
         display: inline-flex !important;
         justify-content: center !important;
         align-items: center !important;
@@ -1162,6 +1161,15 @@
         min-width: 92px !important;
         padding: 8px 12px !important;
         margin: 0 auto !important;
+      }
+      .budget-footer .grand-total {
+        display: inline-flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        text-align: right !important;
+        min-width: 92px !important;
+        padding: 8px 12px !important;
+        margin-left: auto !important;
       }
 
       /* Print: ocultar coluna Ação e garantir o rodapé em preto */
@@ -1174,6 +1182,7 @@
       }
       .budget-footer {
         align-items: center !important;
+        justify-content: space-between !important;
       }
       .budget-footer .grand-total {
         min-width: 140px !important;
