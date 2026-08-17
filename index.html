@@ -870,7 +870,7 @@
       justify-content: space-between;
       align-items: center;
       background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      border: 1px solid rgba(0, 229, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 12px;
       padding: 16px 20px;
       margin-top: auto;
@@ -886,15 +886,40 @@
     .budget-footer .grand-total {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start !important;
       min-width: 120px;
-      padding: 8px 16px;
+      padding: 8px 18px 8px 14px; /* left padding for left-aligned number */
       border-radius: 999px;
-      border: 1px solid rgba(0, 229, 255, 0.25);
-      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
       font-size: 22px;
       font-weight: 800;
       color: var(--brand-cyan);
+      text-align: left !important;
+    }
+
+    /* stronger borders for visibility */
+    .budget-panel,
+    .budget-info-grid,
+    .budget-table-wrapper,
+    .table-container,
+    .budget-footer,
+    .budget-number-badge,
+    .budget-date-badge,
+    .budget-total-badge,
+    .budget-table th,
+    .budget-table td,
+    .quote-item-card,
+    .modal-box {
+      border-color: rgba(255, 255, 255, 0.16) !important;
+      border-width: 1px !important;
+    }
+
+    /* print: stronger, darker borders */
+    @media print {
+      .budget-info-grid, .budget-table-wrapper, .budget-footer {
+        border-color: #999999 !important;
+      }
     }
 
     /* Modal for Import Quote */
