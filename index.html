@@ -729,15 +729,15 @@
     .budget-number-badge {
       background: rgba(0, 229, 255, 0.12);
       color: var(--brand-cyan);
-      border: 1px solid rgba(0, 229, 255, 0.3);
+      border: none !important;
       font-family: monospace;
       font-size: 15px;
       font-weight: 800;
-      padding: 10px;
-      border-radius: 999px;
+      padding: 8px 10px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       letter-spacing: 1px;
     }
 
@@ -745,14 +745,14 @@
     .budget-total-badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-width: 92px;
-      padding: 8px 12px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
+      padding: 6px 10px;
+      border: none !important;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.02);
       font-weight: 700;
-      color: #E2E8F0;
+      color: #000000;
     }
 
     .budget-total-badge {
@@ -764,8 +764,8 @@
     /* Editable Budget Table */
     .budget-table-wrapper {
       background: var(--input-bg);
-      border: 1px solid #1E293B;
-      border-radius: 12px;
+      border: none;
+      border-radius: 6px;
       overflow: hidden;
       min-height: 200px;
       display: flex;
@@ -780,44 +780,47 @@
     }
 
     .budget-table th {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.02);
       color: var(--brand-cyan);
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       padding: 10px 12px;
-      border-bottom: 1px solid #1E293B;
+      border-bottom: none;
     }
 
     .budget-table th:nth-child(5),
     .budget-table td:nth-child(5) {
       width: 110px;
       text-align: right;
+      border-bottom: none;
     }
 
     .budget-table th:nth-child(6),
     .budget-table td:nth-child(6) {
       width: 58px;
       text-align: center;
+      border-bottom: none;
     }
 
     .budget-table td {
       padding: 10px 12px;
       font-size: 13px;
-      color: #E2E8F0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #000000;
+      border-bottom: none;
       vertical-align: middle;
+      background: transparent;
     }
 
     /* Editable inputs inside budget table */
     .edit-qty-input, .edit-price-input, .edit-desc-input, select {
-      background: #050810 !important;
-      border: 1px solid #334155 !important;
-      border-radius: 999px !important;
-      padding: 6px 12px !important;
-      color: #FFFFFF !important;
-      font-weight: 700 !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 6px !important;
+      padding: 6px 8px !important;
+      color: #000000 !important;
+      font-weight: 600 !important;
       font-size: 13px !important;
     }
 
