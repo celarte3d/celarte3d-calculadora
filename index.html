@@ -851,8 +851,26 @@
     }
 
     .edit-qty-input {
-      width: 60px;
+      width: 140px !important; /* wider to fit values like 100.000 */
+      max-width: 100%;
       text-align: center;
+      -moz-appearance: textfield; /* Firefox: remove number arrows */
+      appearance: none;
+      -webkit-appearance: none; /* Chrome/Safari */
+      margin: 0; /* prevent space from spin buttons */
+    }
+
+    /* Remove spinner arrows in WebKit browsers */
+    input.edit-qty-input::-webkit-outer-spin-button,
+    input.edit-qty-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Ensure no spinner in Edge/IE */
+    input[type=number].edit-qty-input {
+      -moz-appearance: textfield;
+      appearance: none;
     }
 
     .edit-price-input {
@@ -1273,10 +1291,10 @@
       /* Prevent quantity clipping: widen QTD column and qty input specifically for print */
       .budget-table th:nth-child(3),
       .budget-table td:nth-child(3) {
-        width: 110px !important;
+        width: 160px !important; /* widen column in print */
       }
       .edit-qty-input {
-        width: 110px !important;
+        width: 160px !important; /* widen qty input in print */
       }
 
       /* Avoid cell clipping */
