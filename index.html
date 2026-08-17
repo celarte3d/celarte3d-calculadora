@@ -1183,6 +1183,24 @@
       .budget-footer {
         align-items: center !important;
         justify-content: space-between !important;
+        position: relative !important;
+      }
+
+      /* Force grand-total to the right in print by absolute positioning (overrides centering) */
+      .budget-footer .grand-total {
+        position: absolute !important;
+        right: 12mm !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+      }
+
+      /* Make the separator lines at the top black in print */
+      .budget-header,
+      .budget-info-grid,
+      .budget-table-wrapper {
+        border: 1px solid #000000 !important;
+        justify-content: space-between !important;
       }
       .budget-footer .grand-total {
         min-width: 140px !important;
