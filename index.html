@@ -668,7 +668,7 @@
       justify-content: space-between;
       align-items: center;
       padding-bottom: 14px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: none; /* removed dividing line as requested */
       flex-wrap: wrap;
       gap: 12px;
     }
@@ -1213,12 +1213,10 @@
         margin: 0 !important;
       }
 
-      /* Make the separator lines at the top black in print */
-      .budget-header,
+      /* Make the separator lines at the top black in print (exclude budget-header to avoid outlining logo/title) */
       .budget-info-grid,
       .budget-table-wrapper {
         border: 1px solid #000000 !important;
-        justify-content: space-between !important;
       }
       .budget-footer .grand-total {
         min-width: 140px !important;
