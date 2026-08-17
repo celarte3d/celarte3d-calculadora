@@ -870,8 +870,8 @@
       justify-content: space-between;
       align-items: center;
       background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      /* stronger, more visible border */
-      border: 1.6px solid rgba(0, 0, 0, 0.12);
+      /* stronger, more visible border (black for print and screen) */
+      border: 1.6px solid #000000 !important;
       border-radius: 12px;
       padding: 16px 20px;
       margin-top: auto;
@@ -913,9 +913,18 @@
     .budget-table td,
     .quote-item-card,
     .modal-box {
-      border-color: rgba(0, 0, 0, 0.18) !important;
-      border-width: 1.6px !important;
+      border-color: #000 !important;
+      border-width: 1.4px !important;
     }
+    /* ensure inputs and badges align inside the grid */
+    .budget-info-grid { align-items: center; }
+    .budget-info-grid .form-group { margin: 0; }
+    .budget-info-grid input[type="text"], .budget-info-grid .budget-number-badge { width: 100% !important; }
+    .budget-number-badge { justify-content: flex-start !important; padding-left: 12px !important; }
+
+    /* Ensure grand-total text is left aligned inside its badge and the badge stays to the right */
+    .budget-footer { justify-content: space-between; }
+    .budget-footer .grand-total { justify-content: flex-start !important; text-align: left !important; }
 
     /* print: stronger, darker borders */
     @media print {
@@ -1482,7 +1491,7 @@
       </div>
 
       <!-- RODAPÉ DE CONTATO: logo centralizada + telefone + email -->
-      <div class="budget-contact" style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:18px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06);">
+      <div class="budget-contact" style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:18px;padding-top:8px;">
         <img src="assets/logo-budget-panel.png" alt="Celarte 3D" style="height:48px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.12));">
         <div style="font-size:14px;font-weight:700;color:#0B101D;">(37) 99939-8906</div>
         <div style="font-size:13px;color:#0B101D;">celarte3d@gmail.com</div>
