@@ -720,6 +720,26 @@
       border: 1px solid #1E293B;
     }
 
+    /* Center PHONE and BUDGET NUMBER visually above their panels; keep inputs/badges aligned with the panel below */
+    .budget-info-grid .form-group:nth-child(2),
+    .budget-info-grid .form-group:nth-child(3) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .budget-info-grid .form-group:nth-child(2) label,
+    .budget-info-grid .form-group:nth-child(3) label {
+      text-align: center;
+    }
+    .budget-info-grid .form-group:nth-child(2) input,
+    .budget-info-grid .form-group:nth-child(3) .budget-number-badge {
+      width: auto !important;
+      max-width: 260px;
+      margin: 0 auto;
+      display: inline-block;
+    }
+
     @media (max-width: 600px) {
       .budget-info-grid {
         grid-template-columns: 1fr;
@@ -867,7 +887,7 @@
 
     .budget-footer {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start; /* place contents starting from the left */
       align-items: center;
       background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
       /* stronger, more visible border (black for print and screen) */
@@ -882,14 +902,18 @@
       font-weight: 800;
       color: var(--brand-cyan);
       letter-spacing: 1px;
+      order: 1; /* label after the grand-total */
+      margin-left: 12px;
     }
 
-    /* Badge: keep it at the right side but align the value text to the left inside the badge */
+    /* Badge: move the grand total to the left (order 0) and keep number left-aligned inside it */
     .budget-footer .grand-total {
+      order: 0;
       display: inline-flex;
       align-items: center;
       justify-content: flex-start !important;
       min-width: 140px;
+      margin-right: 16px;
       padding: 8px 18px 8px 14px; /* left padding for left-aligned number */
       border-radius: 999px;
       border: 1.6px solid rgba(0, 0, 0, 0.14);
