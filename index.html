@@ -1579,7 +1579,7 @@
       <div class="budget-header">
         <div class="budget-brand">
             <img src="assets/logo-budget-panel.png" alt="Celarte 3D" class="budget-panel-logo">
-            <div class="budget-print-title" id="printHeaderTitle">Orçamento</div>
+            <div class="budget-print-title">Orçamento</div>
             <div>
               <h2>Celarte 3D</h2>
               <span style="font-size: 11px; color: var(--brand-cyan);">Orçamento de Impressão 3D</span>
@@ -2033,20 +2033,12 @@
     return `(${ddd}) ${rest.slice(0, 5)}-${rest.slice(5, 9)}`;
   }
 
-  function updatePrintHeaderTitle() {
-    let clientName = document.getElementById('clientName').value.trim();
-    let quoteNum = document.getElementById('budgetNumberDisplay').innerText.trim() || 'CTORC - 00001';
-    let title = clientName ? `Orçamento ${clientName} - ${quoteNum}` : `Orçamento - ${quoteNum}`;
-    document.getElementById('printHeaderTitle').innerText = title;
-  }
-
   function createNewBudget() {
     budgetItems = [];
     document.getElementById('clientName').value = '';
     document.getElementById('clientPhone').value = '';
     document.getElementById('budgetNotes').value = '';
     document.getElementById('budgetNumberDisplay').innerText = getNextQuoteNumber();
-    updatePrintHeaderTitle();
     renderBudgetTable();
   }
 
@@ -2093,7 +2085,6 @@
       document.getElementById('clientPhone').value = target.clientPhone || '';
       document.getElementById('budgetNotes').value = target.notes || '';
       budgetItems = target.items || [];
-      updatePrintHeaderTitle();
       renderBudgetTable();
       closeImportModal();
     }
@@ -2114,9 +2105,7 @@
     this.value = formatPhone(this.value);
   });
 
-  document.getElementById('clientName').addEventListener('input', updatePrintHeaderTitle);
   document.getElementById('budgetNumberDisplay').innerText = getNextQuoteNumber();
-  updatePrintHeaderTitle();
   calculate();
   renderBudgetTable();
 </script>
